@@ -321,32 +321,21 @@ FROM
 
 -- 問30
 -- 最年長が50歳以上かつ最年少が30歳以下の国を表示させてください。
-WITH CountryAge AS (
-  SELECT
-    countries.code AS country_code,
-    MAX(celebrities.age) AS oldest_age,
-    MIN(celebrities.age) AS youngest_age
-  FROM
+SELECT
+    countries.name AS country_name,
+    MAX(celebrities.age) AS oldest,
+    MIN(celebrities.age) AS  youngest
+FROM
     celebrities
-  LEFT JOIN
+LEFT JOIN
     countries
     ON celebrities.country_code = countries.code
-  GROUP BY
-    countries.code
-)
+GROUP BY
+    countries.name
+HAVING
+    MAX(celebrities.age) >= 50
+    AND MIN(celebrities.age) <= 30;
 
-SELECT
-  countries.name AS country_name,
-  CountryAge.oldest_age AS oldest,
-  CountryAge.youngest_age AS youngest
-FROM
-  CountryAge
-INNER JOIN
-  countries
-  ON CountryAge.country_code = countries.code
-WHERE
-  CountryAge.oldest_age >= 50
-  AND CountryAge.youngest_age <= 30;
 
 
 
